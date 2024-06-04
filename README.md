@@ -1,1 +1,14 @@
 # ED-Ge-ded
+## Requirements
+* python3.7
+* pytorch==1.5.0
+* cuda10.2
+* scikit-image
+* opencv-python
+## Datasets 
+**Cityscapes**:  [Cityscape](https://www.cityscapes-dataset.com/) 
+**NightCity**:  [NightCity](https://dmcv.sjtu.edu.cn/people/phd/tanxin/NightCity/index.html/) 
+**ACDC**:  [ACDC](https://acdc.vision.ee.ethz.ch/) 
+**Dark-Zurich**: [Dark-Zurich](https://www.trace.ethz.ch/publications/2019/GCMA_UIoU/) 
+## Test
+## Training 
