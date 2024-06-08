@@ -14,3 +14,5 @@ The Code has not been sorted out. I will sort it out when I have time.
 
 ## Training 
 I've already uploaded the core code, so reproducing it should be quite easy
+## Training 
+The code is based on DANNet, IA-Seg-main,PSPNet, Deeplab-v2 and RefineNet.
