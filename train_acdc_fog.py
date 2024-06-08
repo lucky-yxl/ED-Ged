@@ -12,7 +12,9 @@ import os
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 from network import *
-from network import dip
+from network import dip1
+from netword import mgdip
+from netword import mgdip8
 import numpy as np
 import random
 import time
