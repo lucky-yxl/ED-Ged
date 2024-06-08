@@ -10,19 +10,13 @@ import time
 from network import *
 from dataset.zurich_night_dataset import zurich_night_DataSet, nightcity_DataSet
 from configs.test_config import get_arguments
-from network import dip
 from network import dip1
-from network import LEF
 from network import dippe
-from network import LEFdip
 from network import mydip8
 from network import mydip
-from network import mgdipatt
 from network import mydipsa
-from network import mydipatt1
 from network import mydipft
-from network import gdip_model
-from network import mgdippeDPM
+
 
 import torchvision.transforms as standard_transforms
 
