@@ -526,22 +526,6 @@ class CNN_PP(nn.Module):
         self.filtered_images, self.Pr, self.filter_parameters = [torch.ones_like(img_input)]*4, torch.ones((1,4,1,1)),[torch.ones((1,1,1,1))]*4
         return x, self.filtered_images, self.Pr, self.filter_parameters
 
-#
-# class DenoisingNet(nn.Module):
-#     def __init__(self):
-#         super(DenoisingNet, self).__init__()
-#         # 定义降噪网络结构，可以是一个卷积自编码器等
-#         self.conv1 = nn.Conv2d(3, 64, kernel_size=3, padding=1)
-#         self.relu = nn.ReLU()
-#         self.conv2 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
-#         self.deconv1 = nn.ConvTranspose2d(64, 3, kernel_size=3, padding=1)
-#
-#     def forward(self, x):
-#         x = self.relu(self.conv1(x))
-#         x = self.relu(self.conv2(x))
-#         x = self.deconv1(x)
-#         return x
-
 
 def DIP():
     model = CNN_PP()
