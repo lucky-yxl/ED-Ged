@@ -1,4 +1,4 @@
-# ED-Ge-ded
+# ED-Ged
 ## Requirements
 * python3.7
 * pytorch==1.5.0
