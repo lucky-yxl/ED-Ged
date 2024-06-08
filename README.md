@@ -9,6 +9,8 @@
 **Cityscapes**:  [Cityscape](https://www.cityscapes-dataset.com/) 
 **NightCity**:  [NightCity](https://dmcv.sjtu.edu.cn/people/phd/tanxin/NightCity/index.html/) 
 **ACDC**:  [ACDC](https://acdc.vision.ee.ethz.ch/) 
-**Dark-Zurich**: [Dark-Zurich](https://www.trace.ethz.ch/publications/2019/GCMA_UIoU/) 
 ## Test
+The Code has not been sorted out. I will sort it out when I have time.
+
 ## Training 
+I've already uploaded the core code, so reproducing it should be quite easy
