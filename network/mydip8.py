@@ -149,7 +149,7 @@ class VisionEncoder(torch.nn.Module):
 class GatedDIP(torch.nn.Module):
     def __init__(self, encoder_output_dim=256, num_of_gates=8):
         super(GatedDIP, self).__init__()
-        self.gaussian_blur = torchvision.transforms.GaussianBlur(13, sigma=(0.1, 5.0))#高斯模糊，13表示高斯核大小，表示卷积核的大小，sigma参数指定了高斯核的标准差范围
+        self.gaussian_blur = torchvision.transforms.GaussianBlur(13, sigma=(0.1, 5.0))#高斯模糊
 
         ##### GDIP
         # Gating Module
@@ -343,8 +343,8 @@ class GatedDIP(torch.nn.Module):
         y = self.sharpning_module(latent_out).unsqueeze(2).unsqueeze(3)
         y = self.tanh_range(y, torch.tensor(0.1), torch.tensor(1.))#y 张量包含了锐化的参数或信息
         s = x + (y * (x - out_x))#将锐化效果应用于输入图像
-        s = (s - s.min()) / (s.max() - s.min())#表示原始图像和模糊图像之间的差异，然后通过 y 权重来加强这些差异，从而实现锐化
-        s = s * (sharpning_gate.unsqueeze(1).unsqueeze(2).unsqueeze(3))#归一化，以确保像素值在 0 到 1 之间
+        s = (s - s.min()) / (s.max() - s.min())#
+        s = s * (sharpning_gate.unsqueeze(1).unsqueeze(2).unsqueeze(3))#归一化
         return s
 
     def identity(self, x: torch.tensor, identity_gate: torch.tensor):
@@ -372,10 +372,10 @@ class GatedDIP(torch.nn.Module):
             _type_: _description_
         """
         alpha = torch.tanh(self.contrast_module(latent_out))#表示对比度的参数或信息
-        luminance = torch.minimum(torch.maximum(self.rgb2lum(x), torch.tensor(0.0)), torch.tensor(1.0)).unsqueeze(1)#通过 rgb2lum(x) 计算得到的亮度图像,亮度图像的计算可能基于输入图像 x，并使用了 rgb2lum 函数，将像素值转化为亮度值，并确保亮度值在 [0, 1] 的范围内
-        contrast_lum = -torch.cos(math.pi * luminance) * 0.5 + 0.5#使用亮度的余弦函数变换来计算一个用于控制对比度的值
+        luminance = torch.minimum(torch.maximum(self.rgb2lum(x), torch.tensor(0.0)), torch.tensor(1.0)).unsqueeze(1) 
+        contrast_lum = -torch.cos(math.pi * luminance) * 0.5 + 0.5#
         contrast_image = x / (luminance + 1e-6) * contrast_lum#调整图像的对比度
-        contrast_image = self.lerp(x, contrast_image, alpha)#输入图像 x 和 contrast_image 之间进行线性插值,alpha 控制了插值的程度，从而调整了对比度
+        contrast_image = self.lerp(x, contrast_image, alpha)
         contrast_image = (contrast_image - contrast_image.min()) / (contrast_image.max() - contrast_image.min())
         contrast_image = contrast_image * contrast_gate.unsqueeze(1).unsqueeze(2).unsqueeze(3)
         return contrast_image
@@ -400,80 +400,6 @@ class GatedDIP(torch.nn.Module):
         total_image = (total_image - total_image.min()) / (total_image.max() - total_image.min())
         total_image = total_image * tone_gate.unsqueeze(1).unsqueeze(2).unsqueeze(3)
         return total_image
-#add
-    # def tanh_range(self, x, min_val, max_val):
-    #     return 0.5 * (torch.tanh(x) + 1.0) * (max_val - min_val) + min_val
-    #
-    # def adjust_saturation(self, x, latent_out: torch.tensor, saturation_gate: torch.tensor):
-    #     saturation = self.saturation_module(latent_out)
-    #     saturation = self.tanh_range(saturation, -0.5, 0.5)
-    #
-    #     # Adjust saturation of the input image
-    #     h, s, v = x.split(1, dim=1)
-    #     s_adjusted = s + saturation
-    #     s_adjusted = torch.clamp(s_adjusted, 0, 1)
-    #     x_adjusted = torch.cat((h, s_adjusted, v), dim=1)
-    #     ing=x_adjusted * saturation_gate.unsqueeze(1)
-    #
-    #     return ing
-
-
- #add
-    #
-    # def lighting_estimation_model(self,x, latent_out, le_gate):
-    #     conv1 = nn.Conv2d(3, 64, kernel_size=3, padding=1)
-    #     relu = nn.ReLU()
-    #     conv2 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
-    #     fc1 = nn.Linear(64 * 64 * 64, 128)
-    #     fc2 = nn.Linear(128, 3)
-    #
-    #     x = relu(conv1(x))
-    #     x = relu(conv2(x))
-    #     x = x.view(x.size(0), -1)
-    #     x = x + latent_out  # Incorporate latent_out
-    #     x = x * le_gate  # Incorporate tone_gate
-    #     x = relu(fc1(x))
-    #     lighting = fc2(x)
-    #
-    #     return lighting
-
-    # def adjust_saturation(self, x: torch.tensor, latent_out: torch.tensor,saturation_gate: torch.tensor):
-    #     """
-    #     调整图像的饱和度
-    #
-    #     Args:
-    #         x (torch.tensor): 输入图像张量，形状为 (batch_size, channels, height, width)
-    #         saturation_factor (torch.tensor): 饱和度调整因子，大于1增加饱和度，小于1降低饱和度
-    #
-    #     Returns:
-    #         torch.tensor: 经过饱和度调整后的图像张量，与输入图像形状相同
-    #     """
-    #
-        # saega=self.saturation_module(latent_out).unsqueeze(2).unsqueeze(3)
-        # log_saega = torch.log(torch.tensor(2.5))
-        # saega = torch.exp(self.tanh_range(saega, -log_saega, log_saega))
-        #
-        # # 转换输入图像为浮点数格式
-        # x = x.float()
-        #
-        # # 将彩色通道分离出来
-        # r, g, b = x[:, 0, :, :], x[:, 1, :, :], x[:, 2, :, :]
-        #
-        # # 计算饱和度调整后的通道
-        #
-        # gray = 0.299 * r + 0.587 * g + 0.114 * b
-        # adjusted_r = gray + latent_out * (r - gray)
-        # adjusted_g = gray + latent_out * (g - gray)
-        # adjusted_b = gray + latent_out * (b - gray)
-        #
-        #
-        # # 合并调整后的通道
-        # adjusted_image = torch.stack((adjusted_r, adjusted_g, adjusted_b), dim=1)
-        #
-        # # 确保像素值在 0 到 1 之间
-        # adjusted_image=adjusted_image*saturation_gate.unsqueeze(1).unsqueeze(2).unsqueeze(3)
-        #
-        # return adjusted_image
 
 
 
