@@ -64,8 +64,8 @@ class VisionEncoder(torch.nn.Module):
         # conv_1
         self.conv_1 = torch.nn.Sequential(torch.nn.Conv2d(3, 64, kernel_size=3, stride=1),
                                           torch.nn.ReLU(True))
-        self.max_pool_1 = torch.nn.AvgPool2d((3, 3), (2, 2))#平均池化层
-        self.adp_pool_1 = torch.nn.AdaptiveAvgPool2d((1, 1))#自适应平均池化
+        self.max_pool_1 = torch.nn.AvgPool2d((3, 3), (2, 2))
+        self.adp_pool_1 = torch.nn.AdaptiveAvgPool2d((1, 1))
         self.linear_proj_1 = torch.nn.Sequential(torch.nn.Linear(64, encoder_output_dim),#
                                                  torch.nn.ReLU(True))
 
