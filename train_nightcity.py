@@ -11,11 +11,10 @@ from PIL import Image
 
 from network import *
 from network import dip1
-#from network import mydipLEF
 from network import mydip
 from network import mydip8
 from network import mydipsa
-from network import mgdippeDPM
+
 
 import numpy as np
 import random
