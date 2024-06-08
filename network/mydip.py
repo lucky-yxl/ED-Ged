@@ -491,7 +491,6 @@ class CNN_PP(nn.Module):
 
     def forward(self, img_input):
         x,gates = self.model(img_input)
-        ##x以下未使用可删去，训练测试时也可以删去
         self.filtered_images, self.Pr, self.filter_parameters = [torch.ones_like(img_input)]*4, torch.ones((1,4,1,1)),[torch.ones((1,1,1,1))]*4
         return x, self.filtered_images, self.Pr, self.filter_parameters
 
