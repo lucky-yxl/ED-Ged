@@ -142,16 +142,15 @@ cfg                             = __C
 cfg.filters = [ExposureFilter, GammaFilter, ContrastFilter, UsmFilter,]
 # cfg.filters = []
 
-cfg.num_filter_parameters = 4  #4
+cfg.num_filter_parameters = 7  #4
 
 cfg.exposure_begin_param = 0
 cfg.gamma_begin_param = 1
 cfg.contrast_begin_param = 2
 cfg.usm_begin_param = 3
-#加
-#cfg.wb_begin_param = 4
-# cfg.my_begin_param=5
-# cfg.WD_begin_param=6
+cfg.wb_begin_param = 4
+cfg.my_begin_param=5
+cfg.defog_begin_param = 0
 
 # cfg.filters = [ExposureFilter, GammaFilter, ToneFilter, ContrastFilter, UsmFilter]
 # # cfg.filters = [GammaFilter]
